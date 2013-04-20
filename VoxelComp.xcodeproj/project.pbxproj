@@ -1,0 +1,221 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF00765E1722B2B900CEEA15 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF00765D1722B2B900CEEA15 /* main.cpp */; };
+		BF0076601722B2B900CEEA15 /* VoxelComp.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BF00765F1722B2B900CEEA15 /* VoxelComp.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BF0076581722B2B800CEEA15 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				BF0076601722B2B900CEEA15 /* VoxelComp.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		BF00765A1722B2B800CEEA15 /* VoxelComp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VoxelComp; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF00765D1722B2B900CEEA15 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		BF00765F1722B2B900CEEA15 /* VoxelComp.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = VoxelComp.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF0076571722B2B800CEEA15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF0076511722B2B800CEEA15 = {
+			isa = PBXGroup;
+			children = (
+				BF00765C1722B2B800CEEA15 /* VoxelComp */,
+				BF00765B1722B2B800CEEA15 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF00765B1722B2B800CEEA15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF00765A1722B2B800CEEA15 /* VoxelComp */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF00765C1722B2B800CEEA15 /* VoxelComp */ = {
+			isa = PBXGroup;
+			children = (
+				BF00765D1722B2B900CEEA15 /* main.cpp */,
+				BF00765F1722B2B900CEEA15 /* VoxelComp.1 */,
+			);
+			path = VoxelComp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF0076591722B2B800CEEA15 /* VoxelComp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF0076631722B2B900CEEA15 /* Build configuration list for PBXNativeTarget "VoxelComp" */;
+			buildPhases = (
+				BF0076561722B2B800CEEA15 /* Sources */,
+				BF0076571722B2B800CEEA15 /* Frameworks */,
+				BF0076581722B2B800CEEA15 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoxelComp;
+			productName = VoxelComp;
+			productReference = BF00765A1722B2B800CEEA15 /* VoxelComp */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF0076521722B2B800CEEA15 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = Pineapple;
+			};
+			buildConfigurationList = BF0076551722B2B800CEEA15 /* Build configuration list for PBXProject "VoxelComp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BF0076511722B2B800CEEA15;
+			productRefGroup = BF00765B1722B2B800CEEA15 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF0076591722B2B800CEEA15 /* VoxelComp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF0076561722B2B800CEEA15 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF00765E1722B2B900CEEA15 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BF0076611722B2B900CEEA15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BF0076621722B2B900CEEA15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BF0076641722B2B900CEEA15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BF0076651722B2B900CEEA15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF0076551722B2B800CEEA15 /* Build configuration list for PBXProject "VoxelComp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF0076611722B2B900CEEA15 /* Debug */,
+				BF0076621722B2B900CEEA15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF0076631722B2B900CEEA15 /* Build configuration list for PBXNativeTarget "VoxelComp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF0076641722B2B900CEEA15 /* Debug */,
+				BF0076651722B2B900CEEA15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF0076521722B2B800CEEA15 /* Project object */;
+}
