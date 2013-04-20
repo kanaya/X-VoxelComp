@@ -701,12 +701,29 @@ void MOUSE(int event, int x, int y, int flags, void *imgA){
             }
             else if(DeleteFlag == 1){//DeleteFlag==1の時、削除
                 double DGLp,Dxyz;//Deleate_GL_Point(各軸の断面中央値),Deleate_XYZ(各軸の断面幅)
+#if 0
                 if(DD==0)
                     DGLp=XX,Dxyz=DX;//DD=0:X軸断面
                 else if(DD==1)
                     DGLp=YY,Dxyz=DX;//DD=1:Y軸断面
                 else if(DD==2)
                     DGLp=ZZ,Dxyz=DX;//DD=2:Z軸断面
+#else
+              DGLp = 0.0;
+              Dxyz = 0.0;
+              if (DD == 0) {
+                DGLp=XX;
+                Dxyz=DX;//DD=0:X軸断面
+              }
+              else if (DD == 1) {
+                DGLp=YY;
+                Dxyz=DX;//DD=1:Y軸断面
+              }
+              else if (DD == 2) {
+                DGLp=ZZ;
+                Dxyz=DX;//DD=2:Z軸断面
+              }
+#endif
                 double DqtreeX=cv_width/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeX
                 double DqtreeY=cv_height/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeY.
                 double DqtX_count,DqtY_count;//CVの削除するピクセルの下限:QuadtreeX,Y
@@ -786,8 +803,11 @@ void MOUSE(int event, int x, int y, int flags, void *imgA){
 /*****************[キーボード(主にGLの窓で使用)]**************************/
 
 void keyboard(unsigned char key, int x, int y){
-	switch(key){//[a, c, d, e, f, g, h, i, j, k, l, m, n, o, p, r, w, x, z,Esc]が使用中
-            //		[GL用]
+  switch(key){  //[a, c, d, e, f, g, h, i, j, k, l, m, n, o, p, r, w, x, z,Esc]が使用中
+    case ';':
+      fprintf(stderr, "key ; was hit.");
+      break;
+      //		[GL用]
 		case 'X'://X軸回転
 			rotX-=2;
 			glutPostRedisplay();
@@ -1132,36 +1152,45 @@ void ReFileInput(char* Input_data){//その場でアウトプットしたファ�
 }
 
 
-/*****************[点の読み込み]**************************/
-void read_Point(char* Input_data){
-    //点データファイル読み込み
+void read_Point(char* Input_data) {
 	int rP_count=0;
-	fprintf(stderr,"点データの読み込み開始\n");
-	FILE *fp = fopen(Input_data,"r");
-	double tx,ty,tz; char tmp_c[255];
-	while(fgets(tmp_c,100,fp) && !feof(fp)){
-		if(tmp_c[0]!=0x23){		//先頭行が#でなければ読み込む
-			sscanf(tmp_c,"%lf %lf %lf\n",&tx, &ty, &tz);
-			if(data_3d.size()==0 || vox_min[0]>tx)vox_min[0]=tx;
-			if(data_3d.size()==0 || vox_max[0]<tx)vox_max[0]=tx;
-			if(data_3d.size()==0 || vox_min[1]>ty)vox_min[1]=ty;
-			if(data_3d.size()==0 || vox_max[1]<ty)vox_max[1]=ty;
-			if(data_3d.size()==0 || vox_min[2]>tz)vox_min[2]=tz;
-			if(data_3d.size()==0 || vox_max[2]<tz)vox_max[2]=tz;
-			data_3d.push_back(tx), data_3d.push_back(ty), data_3d.push_back(tz);
-            
-			if(rP_count%100000==0)fprintf(stderr,"%d行目まで読み込み(%f, %f, %f)\r",
-                                          rP_count,data_3d[data_3d.size()-3],data_3d[data_3d.size()-2],data_3d[data_3d.size()-1]);
+  std::cerr << "Start reading pointcloud." << std::endl;
+	FILE *fp = fopen(Input_data, "r");
+	double tx, ty, tz;
+  char tmp_c[255];
+	while (fgets(tmp_c,100,fp) && !feof(fp)) {  // ERROR: DO NOT USE FEOF.
+		if (tmp_c[0] != '#') {
+			sscanf(tmp_c, "%lf %lf %lf\n", &tx, &ty, &tz);  // WARNING: SHOULD USE std::cin.
+      // WARNING: THE FOLLOWING CODE SHOULD BE REPLACED WITH MAX.
+			if (data_3d.size() == 0 || vox_min[0] > tx) vox_min[0] = tx;
+			if (data_3d.size() == 0 || vox_max[0] < tx) vox_max[0] = tx;
+			if (data_3d.size() == 0 || vox_min[1] > ty) vox_min[1] = ty;
+			if (data_3d.size() == 0 || vox_max[1] < ty) vox_max[1] = ty;
+			if (data_3d.size() == 0 || vox_min[2] > tz) vox_min[2] = tz;
+			if (data_3d.size() == 0 || vox_max[2] < tz) vox_max[2] = tz;
+			data_3d.push_back(tx);
+      data_3d.push_back(ty);
+      data_3d.push_back(tz);
+			if (rP_count % 100000 == 0) {
+        std::cerr << "Read " << rP_count << std::endl;
+      }
 			rP_count++;
 		}
 	}
-	//対象オブジェクトの最大幅を決定
-	if(vox_max[0]-vox_min[0]>=vox_max[1]-vox_min[1] && vox_max[0]-vox_min[0]>=vox_max[0]-vox_min[0])vox_max_divide=vox_max[0]-vox_min[0];
-	else if(vox_max[1]-vox_min[1]>=vox_max[2]-vox_min[2])vox_max_divide=vox_max[1]-vox_min[1];
-	else vox_max_divide=vox_max[2]-vox_min[2];
+	if (vox_max[0] - vox_min[0] >= vox_max[1] - vox_min[1]
+      && vox_max[0] - vox_min[0] >= vox_max[0] - vox_min[0]) {
+    vox_max_divide = vox_max[0] - vox_min[0];
+  }
+	else if (vox_max[1] - vox_min[1] >= vox_max[2] - vox_min[2]) {
+    vox_max_divide = vox_max[1] - vox_min[1];
+  }
+	else {
+    vox_max_divide = vox_max[2] - vox_min[2];
+  }
 	fclose(fp);
-	fprintf(stderr,"\n点データの読み込み完了(%d)\n",rP_count);
+  std::cerr << "Finished reading pointcloud." << std::endl;
 }
+
 /*****************[ボクセル作成]**************************/
 
 void Make_Voxcel(void){
