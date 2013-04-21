@@ -1,3 +1,5 @@
+// astyle --style=java -s2 -C -S -Y -p -H -k3 -W3 -y -j -c VoxelComp/main.cpp
+
 /* 10年度卒業研究用プログラム『DTVoxcel(Divide Tree Voxcel)』の、CON(confidence)点群信頼度追加版、作成開始2011/02/07 */
 /* DTVoxcel_REを流用(入力データはdouble型で自由)。OpenCVによるボクセルのXYZ軸断面の二次元画像を出す。 */
 /* 対象オブジェクトの8分木は、XYZの内の最大の幅を利用し、空間分割する。REの信頼度は最深ボクセルのみ対応 */
@@ -2026,7 +2028,6 @@ void gluiCallbackExit(int num) {
 
 /*****************[デフォルトボタンver.01]**************************/
 void gluiCallbackDef(int num) {
-
   gluiXYZ[0] = 0.0;
   gluiXYZ[1] = 0.0;
   gluiXYZ[2] = 0.0;
