@@ -30,7 +30,6 @@
 		BF00765A1722B2B800CEEA15 /* VoxelComp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VoxelComp; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF00765D1722B2B900CEEA15 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BF00765F1722B2B900CEEA15 /* VoxelComp.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = VoxelComp.1; sourceTree = "<group>"; };
-		BF0076661722B30F00CEEA15 /* TVoxcel2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TVoxcel2.hpp; sourceTree = "<group>"; };
 		BF0076681722B36F00CEEA15 /* f_church.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = f_church.txt; sourceTree = "<group>"; };
 		BF0076691722B4AA00CEEA15 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		BF00766B1722B4B900CEEA15 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -71,7 +70,6 @@
 			isa = PBXGroup;
 			children = (
 				BF00765D1722B2B900CEEA15 /* main.cpp */,
-				BF0076661722B30F00CEEA15 /* TVoxcel2.hpp */,
 				BF00765F1722B2B900CEEA15 /* VoxelComp.1 */,
 			);
 			path = VoxelComp;
@@ -264,6 +262,7 @@
 				BF0076651722B2B900CEEA15 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
