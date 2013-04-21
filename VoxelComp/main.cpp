@@ -606,32 +606,32 @@ float gluiXYZ[3] = { 0.0, 0.0, 0.0 };
 
 
 /***[プロトタイプ宣言]***/
-void drawVoxcel0(TVoxcel *voxcel, int value);  // GLのボクセル描画・カラー：基本RGB
-void drawVoxcel1(TVoxcel *voxcel, int value);  // GLのボクセル描画・カラー：点群粗密信頼度HSV
-void value_counter_con(void);                   // GLの点群信頼度算出用
-void display(void);                         // GLの表示
-void counterCpoint(TVoxcel *voxcel, int value);           // GLの点群信頼度、MAX算出用
-void reshape(int x, int y);                     // 画面再描画
-void timer();                           // timer関数：常時Reディスプレイ
-void DRAW_TREE_4( IplImage *clone, CvPoint *KData);//CV:四分木：統括
-void DRAW_TREE_4c2( IplImage *imgA, CvPoint *pts , int x, int y, int dim); //CV:四分木信頼度
-void DRAW_TREE_4c1( IplImage *imgA, CvPoint *pts , int x, int y, int dim); //CV:四分木信頼度
-void DRAW_TREE_4v( IplImage *imgA, CvPoint *pts , int x, int y, int dim); //CV:四分木ボクセル
-void DRAW_TREE_4p( IplImage *imgA, CvPoint *pts , int x, int y, int dim); //CV:四分木ポイント
-void DRAW_TREE_4l( IplImage *imgA, CvPoint *pts , int x, int y, int dim); //CV:四分木ライン
-void KnownPoint( void *imgA, CvPoint *KData );            //CV：既知点表示
-CvPoint *CVset(void);                       //CV用の座標点、3次元点群からセット
-static void MOUSE(int event, int x, int y, int flags, void *imgA);  //マウス
-static void keyboard(unsigned char key, int x, int y);        //キーボード
-static void DAxis(int Flag);                    //断面デフォルト
-void gluiCallbackExit(int num);                   //GLUI:EXIT
-void gluiCallbackDef(int num);                    //GLUI:再描画
-void FileOutput(void);                        //ファイル出力
-void ReFileInput(const char *Input_data);                 //ファイル入力
-void DataRead(void);                        //データ閲覧
-void Make_Voxcel(void);                       //ボクセルデータ作成
-void point_plus(int plus_x, int plus_y, void *imgA);        //CVで点を追加した際に実行される関数
-void read_Point(const char *Input_data);                  //点群ファイルから、データ型に移行[初期設定]
+void drawVoxcel0(TVoxcel *voxcel, int value);                              // GLのボクセル描画・カラー：基本RGB
+void drawVoxcel1(TVoxcel *voxcel, int value);                              // GLのボクセル描画・カラー：点群粗密信頼度HSV
+void value_counter_con(void);                                              // GLの点群信頼度算出用
+void display(void);                                                        // GLの表示
+void counterCpoint(TVoxcel *voxcel, int value);                            // GLの点群信頼度、MAX算出用
+void reshape(int x, int y);                                                // 画面再描画
+void timer();                                                              // timer関数：常時Reディスプレイ
+void DRAW_TREE_4( IplImage *clone, CvPoint *KData);                        // CV:四分木：統括
+void DRAW_TREE_4c2( IplImage *imgA, CvPoint *pts , int x, int y, int dim); // CV:四分木信頼度
+void DRAW_TREE_4c1( IplImage *imgA, CvPoint *pts , int x, int y, int dim); // CV:四分木信頼度
+void DRAW_TREE_4v( IplImage *imgA, CvPoint *pts , int x, int y, int dim);  // CV:四分木ボクセル
+void DRAW_TREE_4p( IplImage *imgA, CvPoint *pts , int x, int y, int dim);  // CV:四分木ポイント
+void DRAW_TREE_4l( IplImage *imgA, CvPoint *pts , int x, int y, int dim);  // CV:四分木ライン
+void KnownPoint( void *imgA, CvPoint *KData );                             // CV：既知点表示
+CvPoint *CVset(void);                                                      // CV用の座標点、3次元点群からセット
+static void MOUSE(int event, int x, int y, int flags, void *imgA);         // マウス
+static void keyboard(unsigned char key, int x, int y);                     // キーボード
+static void DAxis(int Flag);                                               // 断面デフォルト
+void gluiCallbackExit(int num);                                            // GLUI:EXIT
+void gluiCallbackDef(int num);                                             // GLUI:再描画
+void FileOutput(void);                                                     // ファイル出力
+void ReFileInput(const char *Input_data);                                  // ファイル入力
+void DataRead(void);                                                       // データ閲覧
+void Make_Voxcel(void);                                                    // ボクセルデータ作成
+void point_plus(int plus_x, int plus_y, void *imgA);                       // CVで点を追加した際に実行される関数
+void read_Point(const char *Input_data);                                   // 点群ファイルから、データ型に移行[初期設定]
 
 
 
