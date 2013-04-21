@@ -36,7 +36,7 @@ const int nil = 0;
  変数定義
  ----------------------*/
 /****[GL定義]****/
-char* gl_title = "Voxcel_View_GL";		//GLウィンドウのタイトル
+const char *gl_title = "Voxcel_View_GL";		//GLウィンドウのタイトル
 int gl_width   = 640;					//GLウィンドウの幅
 int gl_height  = 800;					//GLウィンドウの高さ
 double vox_min[3], vox_max[3];			//対象オブジェクトの領域の最小(x,y,z)と最大(x,y,z)
@@ -61,7 +61,7 @@ int fcount=0;							//グローバルでとにかく確認する為のもの。
 
 
 /****[CV定義]****/
-char* cv_title = "Voxcel_View_CV";
+const char *cv_title = "Voxcel_View_CV";
 int cv_width = 1024;									//CVウィンドウの幅
 int cv_height = 1024;									//CVウィンドウの高さ
 CvSize window_size={cv_width, cv_height};				//窓サイズ
@@ -113,11 +113,11 @@ static void DAxis(int Flag);										//断面デフォルト
 void gluiCallbackExit(int num);										//GLUI:EXIT
 void gluiCallbackDef(int num);										//GLUI:再描画
 void FileOutput(void);												//ファイル出力
-void ReFileInput(char* Input_data);									//ファイル入力
+void ReFileInput(const char *Input_data);									//ファイル入力
 void DataRead(void);												//データ閲覧
 void Make_Voxcel(void);												//ボクセルデータ作成
 void point_plus(int plus_x, int plus_y, void *imgA);				//CVで点を追加した際に実行される関数
-void read_Point(char* Input_data);									//点群ファイルから、データ型に移行[初期設定]
+void read_Point(const char *Input_data);									//点群ファイルから、データ型に移行[初期設定]
 
 
 
@@ -237,13 +237,13 @@ void drawVoxcel0(TVoxcel *voxcel, int value){//ここで再帰
  ボクセル描画改良1：点群による信頼度
  ----------------------*/
 void drawVoxcel1(TVoxcel *voxcel, int value){
-	int Con=0;//ワイヤーorソリッド
+  int Con=0;//ワイヤーorソリッド
 	int choise=0;//選択されるXYZ断面かどうか：１なら断面候補
 	int HSV_Hi;								//HSV色空間変換用
 	double HSV_H,HSV_f,HSV_p,HSV_q,HSV_t;	//HSV色空間変換用
 	double siken=0;
-	if(voxcel->value==value){
-		confidence_p=0;
+	if (voxcel->value==value) {
+    confidence_p=0;
 		//siken=((double)voxcel->point_number/(double)confidence_max+0.8)*((double)voxcel->point_number/(double)confidence_max+0.8)/3.24;
 		siken=(double)voxcel->point_number/(double)confidence_max;
 		HSV_H=siken*270;//ボクセル内包個数/指定階層ボクセル内包最大個数を、０°〜270°で表現する
@@ -251,28 +251,35 @@ void drawVoxcel1(TVoxcel *voxcel, int value){
 		HSV_f=((double)HSV_H /60)-(double)HSV_Hi;
 		HSV_p=0;HSV_q=(1-(double)HSV_f);HSV_t=(1-(1-(double)HSV_f));
 		glPushMatrix();
-        if(voxcel->min_x<=XX && XX<voxcel->max_x || voxcel->min_y<=YY && YY<voxcel->max_y || voxcel->min_z<=ZZ && ZZ<voxcel->max_z){//カラー設定断面:HSV表記
-            if(HSV_Hi==0)glColor4f(1.0, HSV_t, HSV_p, 1.0);
-            if(HSV_Hi==1)glColor4f(HSV_q, 1.0, HSV_p, 1.0);
-            if(HSV_Hi==2)glColor4f(HSV_p, 1.0, HSV_t, 1.0);
-            if(HSV_Hi==3)glColor4f(HSV_p, HSV_q, 1.0, 1.0);
-            if(HSV_Hi==4)glColor4f(HSV_t, HSV_p, 1.0, 1.0);
-            if(HSV_Hi==5)glColor4f(1.0, HSV_p, HSV_q, 1.0);
-            choise=1;//断面候補
-        }
-        else glColor4f(1.0, 1.0, 1.0, 0.0),Con=0;//ここまでで色と、ワイヤーorソリッドを決める。
-        if(DD==0)if(voxcel->min_x<=XX && XX<voxcel->max_x)Con=1;
-        if(DD==1)if(voxcel->min_y<=YY && YY<voxcel->max_y)Con=1;
-        if(DD==2)if(voxcel->min_z<=ZZ && ZZ<voxcel->max_z)Con=1;
-        glTranslatef((voxcel->max_x+voxcel->min_x)/2, (voxcel->max_y+voxcel->min_y)/2, (voxcel->max_z+voxcel->min_z)/2);//移動して
-        glScalef(voxcel->max_x-voxcel->min_x, voxcel->max_y-voxcel->min_y, voxcel->max_z-voxcel->min_z);//大きさ指定して
-        if(acFlag==0)if(Con==0)glutWireCube(1);				//ワイヤーを描く
-        if(acFlag==1)if(Con==0)if(choise==1)glutWireCube(1);//選択断面はその他のワイヤーが消えても描く
-        if(Con==1)glutSolidCube(1);							//ソリッドを描く
+    if ((voxcel->min_x<=XX && XX<voxcel->max_x)
+        || (voxcel->min_y<=YY && YY<voxcel->max_y)
+        || (voxcel->min_z<=ZZ && ZZ<voxcel->max_z)) {//カラー設定断面:HSV表記
+      if(HSV_Hi==0)glColor4f(1.0, HSV_t, HSV_p, 1.0);
+      if(HSV_Hi==1)glColor4f(HSV_q, 1.0, HSV_p, 1.0);
+      if(HSV_Hi==2)glColor4f(HSV_p, 1.0, HSV_t, 1.0);
+      if(HSV_Hi==3)glColor4f(HSV_p, HSV_q, 1.0, 1.0);
+      if(HSV_Hi==4)glColor4f(HSV_t, HSV_p, 1.0, 1.0);
+      if(HSV_Hi==5)glColor4f(1.0, HSV_p, HSV_q, 1.0);
+      choise=1;//断面候補
+    }
+    else {
+      glColor4f(1.0, 1.0, 1.0, 0.0),Con=0;//ここまでで色と、ワイヤーorソリッドを決める。
+    }
+    if(DD==0)if(voxcel->min_x<=XX && XX<voxcel->max_x)Con=1;
+    if(DD==1)if(voxcel->min_y<=YY && YY<voxcel->max_y)Con=1;
+    if(DD==2)if(voxcel->min_z<=ZZ && ZZ<voxcel->max_z)Con=1;
+    glTranslatef((voxcel->max_x+voxcel->min_x)/2, (voxcel->max_y+voxcel->min_y)/2, (voxcel->max_z+voxcel->min_z)/2);//移動して
+    glScalef(voxcel->max_x-voxcel->min_x, voxcel->max_y-voxcel->min_y, voxcel->max_z-voxcel->min_z);//大きさ指定して
+    if(acFlag==0)if(Con==0)glutWireCube(1);				//ワイヤーを描く
+    if(acFlag==1)if(Con==0)if(choise==1)glutWireCube(1);//選択断面はその他のワイヤーが消えても描く
+    if(Con==1)glutSolidCube(1);							//ソリッドを描く
 		glPopMatrix();
-	}else{//再帰：ボクセルのvalueがvalue（指定した階層）ではなく、さらに〜分木の構成の場合、
+	}
+  else{//再帰：ボクセルのvalueがvalue（指定した階層）ではなく、さらに〜分木の構成の場合、
 		if(voxcel->child!=nil){//N分木ならN回、自分の子を行う。例えば5階層のボクセル一覧を表示するなら、5階層までもぐって表示させる。
-			for(int i=0;i<voxcel->child_size;i++)drawVoxcel1(voxcel->child[i], value);
+			for(int i=0;i<voxcel->child_size;i++) {
+        drawVoxcel1(voxcel->child[i], value);
+      }
 		}
 	}
 }
@@ -661,143 +668,130 @@ CvPoint* CVset(void){//data_3dのx/y/zをグローバルなCvPoint型のCVPtsに
  --------------------------------*/
 
 /*****************[マウス(主にCVの画面で使用)]**************************/
-void MOUSE(int event, int x, int y, int flags, void *imgA){
-    DO_WHEN_DEBUG(fprintf(stderr, "MOUSE\n"));
-    IplImage *clone = cvCloneImage( (IplImage *)imgA );
-    CvPoint *pts=(CvPoint *) cvAlloc(sizeof (CvPoint) *20000);//四分木用のpts領域確保
-    static bool MOUSE_FLAG=false;
-    int loop_count = 0;
-    switch (event) {
-        case CV_EVENT_LBUTTONDOWN://左：押しむとフラグが立つ。下記イベントで使用。
-            MOUSE_FLAG = true;
-            break;
-        case CV_EVENT_LBUTTONUP://左：離すとフラグが折れる。
-            MOUSE_FLAG = false;
-            if(ReviewFlag==0){
-                DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
-                DO_WHEN_DEBUG(fprintf(stderr, "About to show image... "));
-                cvShowImage(cv_title, clone);//描画終了後、まとまってから表示。軽量化
-                DO_WHEN_DEBUG(fprintf(stderr, "done.\n"));
-                fprintf(stderr, "\nOpenCV再表示完了\n");
+void MOUSE(int event, int x, int y, int flags, void *imgA) {
+  DO_WHEN_DEBUG(fprintf(stderr, "MOUSE\n"));
+  IplImage *clone = cvCloneImage( (IplImage *)imgA );
+  CvPoint *pts=(CvPoint *) cvAlloc(sizeof (CvPoint) *20000);//四分木用のpts領域確保
+  static bool MOUSE_FLAG=false;
+  int loop_count = 0;
+  switch (event) {
+    case CV_EVENT_LBUTTONDOWN://左：押しむとフラグが立つ。下記イベントで使用。
+      MOUSE_FLAG = true;
+      break;
+    case CV_EVENT_LBUTTONUP://左：離すとフラグが折れる。
+      MOUSE_FLAG = false;
+      if (ReviewFlag == 0) {
+        DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
+        cvShowImage(cv_title, clone);//描画終了後、まとまってから表示。軽量化
+        fprintf(stderr, "\nOpenCV再表示完了\n");
+      }
+      break;
+    case CV_EVENT_MBUTTONDOWN://中央：ボクセル分割を再度行う。
+      fprintf(stderr, "ボクセル削除開始\n");//確認用
+      deleteTVoxcel(root);
+      fprintf(stderr, "削除完了\n 再構築開始\n");//確認用
+      Make_Voxcel();
+      glutPostRedisplay();
+      break;
+    case CV_EVENT_RBUTTONDOWN://右:一点ずつ配置、もしくは削除
+      if (DeleteFlag == 0) {//DeleteFlagが０の時、追加
+        point_plus((int)x, (int)y, imgA);
+        if (ReviewFlag == 0) {
+          DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
+          cvShowImage(cv_title, clone);//描画終了後、まとまってから表示。軽量化
+          fprintf(stderr, "\nOpenCV再表示完了\n");
+        }
+      }
+      else if (DeleteFlag == 1) {//DeleteFlag==1の時、削除
+        double DGLp, Dxyz;//Deleate_GL_Point(各軸の断面中央値),Deleate_XYZ(各軸の断面幅)
+        DGLp = 0.0;
+        Dxyz = 0.0;
+        if (DD == 0) {
+          DGLp=XX;
+          Dxyz=DX;//DD=0:X軸断面
+        }
+        else if (DD == 1) {
+          DGLp=YY;
+          Dxyz=DX;//DD=1:Y軸断面
+        }
+        else if (DD == 2) {
+          DGLp=ZZ;
+          Dxyz=DX;//DD=2:Z軸断面
+        }
+        double DqtreeX=cv_width/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeX
+        double DqtreeY=cv_height/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeY.
+        double DqtX_count,DqtY_count;//CVの削除するピクセルの下限:QuadtreeX,Y
+        for (DqtX_count=0; DqtX_count<x; DqtX_count+=DqtreeX)
+          {}
+        DqtX_count-=DqtreeX;//削除するX軸左辺を特定
+        for (DqtY_count=0; DqtY_count<y; DqtY_count+=DqtreeY)
+          {}
+        DqtY_count-=DqtreeY;//削除するY軸上辺を特定
+        //CVの点・窓を削除、再描画
+        for (int i=0; i < CVcnt; i++) {
+          if (DqtX_count <= CVPts[i].x && CVPts[i].x < DqtX_count+DqtreeX) {
+            if (DqtY_count <= CVPts[i].y && CVPts[i].y < DqtY_count+DqtreeY) {
+              loop_count++;
+              CVPts[i].x = nil;
+              CVPts[i].y = nil;
+              if(i % 10 == 0) {
+                fprintf(stderr, "CVPts[%d]:[%d,%d]ライン削除完了\n",loop_count,x,y);//確認用
+              }
             }
-            break;
-        case CV_EVENT_MBUTTONDOWN://中央：ボクセル分割を再度行う。
-            fprintf(stderr, "ボクセル削除開始\n");//確認用
-            deleteTVoxcel(root);
-            fprintf(stderr, "削除完了\n 再構築開始\n");//確認用
-            Make_Voxcel();
-            glutPostRedisplay();
-            break;
-        case CV_EVENT_RBUTTONDOWN://右:一点ずつ配置、もしくは削除
-            if(DeleteFlag==0){//DeleteFlagが０の時、追加
-                point_plus((int)x, (int)y, imgA);
-                if(ReviewFlag==0){
-                    DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
-                    DO_WHEN_DEBUG(fprintf(stderr, "About to show image... "));
-                    cvShowImage(cv_title, clone);//描画終了後、まとまってから表示。軽量化
-                    DO_WHEN_DEBUG(fprintf(stderr, "done.\n"));
-                    fprintf(stderr, "\nOpenCV再表示完了\n");
-                }
-            }
-            else if(DeleteFlag == 1){//DeleteFlag==1の時、削除
-                double DGLp,Dxyz;//Deleate_GL_Point(各軸の断面中央値),Deleate_XYZ(各軸の断面幅)
-#if 0
-                if(DD==0)
-                    DGLp=XX,Dxyz=DX;//DD=0:X軸断面
-                else if(DD==1)
-                    DGLp=YY,Dxyz=DX;//DD=1:Y軸断面
-                else if(DD==2)
-                    DGLp=ZZ,Dxyz=DX;//DD=2:Z軸断面
-#else
-              DGLp = 0.0;
-              Dxyz = 0.0;
-              if (DD == 0) {
-                DGLp=XX;
-                Dxyz=DX;//DD=0:X軸断面
-              }
-              else if (DD == 1) {
-                DGLp=YY;
-                Dxyz=DX;//DD=1:Y軸断面
-              }
-              else if (DD == 2) {
-                DGLp=ZZ;
-                Dxyz=DX;//DD=2:Z軸断面
-              }
-#endif
-                double DqtreeX=cv_width/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeX
-                double DqtreeY=cv_height/(pow(2,(double)vox_value));//CVの削除する幅:DimensionQuadtreeY.
-                double DqtX_count,DqtY_count;//CVの削除するピクセルの下限:QuadtreeX,Y
-                for (DqtX_count=0; DqtX_count<x; DqtX_count+=DqtreeX)
-                {}
-                DqtX_count-=DqtreeX;//削除するX軸左辺を特定
-                for (DqtY_count=0; DqtY_count<y; DqtY_count+=DqtreeY)
-                {}
-                DqtY_count-=DqtreeY;//削除するY軸上辺を特定
-                //CVの点・窓を削除、再描画
-                for(int i=0;i<CVcnt;i++){
-                    if(DqtX_count<=CVPts[i].x && CVPts[i].x<DqtX_count+DqtreeX){
-                        if(DqtY_count<=CVPts[i].y && CVPts[i].y<DqtY_count+DqtreeY){
-                            loop_count++;
-                            CVPts[i].x=nil;
-                            CVPts[i].y=nil;
-                            if(i%10==0)
-                                fprintf(stderr, "CVPts[%d]:[%d,%d]ライン削除完了\n",loop_count,x,y);//確認用
-                        }
-                    }
-                }
+          }
+        }
                 /*for(int i=0; i<CVcnt; i++){//CV画像書きなおし
                  pts[0] = cvPoint(0,0);
                  pts[1] = cvPoint(clone->width,clone->height);
                  //if(CVPts[i].x != nil)DRAW_TREE_4( clone, pts, CVPts[i].x, CVPts[i].y, dimension);
                  //if(CVPts[i].x != nil)DRAW_TREE_4( clone, pts, CVPts[i].x, CVPts[i].y, vox_value);
                  }*/
-                if(ReviewFlag==0){
-                    DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
-                    DO_WHEN_DEBUG(fprintf(stderr, "About to show image... "));
-                    cvShowImage(cv_title, clone);
-                    DO_WHEN_DEBUG(fprintf(stderr, "done.\n"));
-                    fprintf(stderr, "\nOpenCV再表示完了\n");
-                }
-                
-                //GLの点を削除
-                double nearX =vox_max_divide*(((double)x)/cv_width)+vox_min[DDX];//指定点のGL側:CVのX座標相当
-                double nearY =vox_max_divide*(((double)(cv_height-y))/cv_height)+vox_min[DDY];//指定点のGL側：CVのY座標
-                double Dotree=vox_max_divide/(pow(2,(double)vox_value));//GLの削除するボクセルの幅
-                double DotX_count,DotY_count;//GLの削除するボクセルの下限（CVのXとYに相当）
-                for(DotX_count=vox_min[DDX]; DotX_count<nearX; DotX_count+=Dotree)
-                {}
-                DotX_count-=Dotree;//削除するX座標左辺を特定
-                for(DotY_count=vox_min[DDY]; DotY_count<nearY; DotY_count+=Dotree)
-                {}
-                DotY_count-=Dotree;//削除するY座標上辺を特定
-                
-                for(int i=0;i<data_3d.size();i+=3){
-                    if((DGLp-Dxyz/2)<=data_3d[i+DD] && data_3d[i+DD]<(DGLp+Dxyz/2)){//採取断面の幅内において
-                        if(DotX_count<=data_3d[i+DDX] && data_3d[i+DDX]<DotX_count+Dotree){
-                            if(DotY_count<=data_3d[i+DDY] && data_3d[i+DDY]<DotY_count+Dotree){
-                                fprintf(stderr, "第%d行目削除,[%f,%f,%f]\n",i/3,data_3d[i+DD],data_3d[i+DDX],data_3d[i+DDY]);//確認用
-                                data_3d[i]=data_3d[i+1]=data_3d[i+2]=nil;		//xyz座標全てにnilを代入
-                            }
-                        }
-                    }
-                }
-                glutPostRedisplay();
-                fprintf(stderr, "Rクリック：処理完了 \n");//最終表示
-            }
-            else
-                fprintf(stderr, "異常事態です。DeleteFlagを確認して下さい \n");//異常
-            break;
-        default:
-            break;
-    }
-    
-    if(event == CV_EVENT_MOUSEMOVE && MOUSE_FLAG == true){
-        if(DeleteFlag==0){//DeleteFlagが０の時、追加
-            point_plus((int)x, (int)y, imgA);
+        if (ReviewFlag == 0) {
+          DRAW_TREE_4(clone, CVPts);//統括にまとめて送って処理してもらう
+          cvShowImage(cv_title, clone);
+          fprintf(stderr, "\nOpenCV再表示完了\n");
         }
+
+        //GLの点を削除
+        double nearX =vox_max_divide*(((double)x)/cv_width)+vox_min[DDX];//指定点のGL側:CVのX座標相当
+        double nearY =vox_max_divide*(((double)(cv_height-y))/cv_height)+vox_min[DDY];//指定点のGL側：CVのY座標
+        double Dotree=vox_max_divide/(pow(2,(double)vox_value));//GLの削除するボクセルの幅
+        double DotX_count,DotY_count;//GLの削除するボクセルの下限（CVのXとYに相当）
+        for (DotX_count=vox_min[DDX]; DotX_count<nearX; DotX_count+=Dotree)
+          {}
+        DotX_count-=Dotree;//削除するX座標左辺を特定
+        for (DotY_count=vox_min[DDY]; DotY_count<nearY; DotY_count+=Dotree)
+          {}
+        DotY_count-=Dotree;//削除するY座標上辺を特定
+        
+        for (int i = 0; i < data_3d.size(); i += 3) {
+          if ((DGLp-Dxyz/2)<=data_3d[i+DD] && data_3d[i+DD]<(DGLp+Dxyz/2)) {//採取断面の幅内において
+            if (DotX_count<=data_3d[i+DDX] && data_3d[i+DDX]<DotX_count+Dotree) {
+              if (DotY_count<=data_3d[i+DDY] && data_3d[i+DDY]<DotY_count+Dotree) {
+                fprintf(stderr, "第%d行目削除,[%f,%f,%f]\n",i/3,data_3d[i+DD],data_3d[i+DDX],data_3d[i+DDY]);//確認用
+                data_3d[i]=data_3d[i+1]=data_3d[i+2]=nil;		//xyz座標全てにnilを代入
+              }
+            }
+          }
+        }
+        glutPostRedisplay();
+        fprintf(stderr, "Rクリック：処理完了 \n");//最終表示
+      }
+      else {
+        fprintf(stderr, "異常事態です。DeleteFlagを確認して下さい \n");//異常
+      }
+      break;
+    default:
+      break;
+  }
+    
+  if (event == CV_EVENT_MOUSEMOVE && MOUSE_FLAG == true) {
+    if (DeleteFlag==0) {//DeleteFlagが０の時、追加
+      point_plus((int)x, (int)y, imgA);
     }
-    cvReleaseImage(&clone);
-    cvFree(&pts);
+  }
+  cvReleaseImage(&clone);
+  cvFree(&pts);
 }
 
 /*****************[キーボード(主にGLの窓で使用)]**************************/
@@ -1106,7 +1100,7 @@ void FileOutput(void){
 
 /*****************[ファイル再入力]**************************/
 
-void ReFileInput(char* Input_data){//その場でアウトプットしたファイルを読み込む為の物
+void ReFileInput(const char *Input_data){//その場でアウトプットしたファイルを読み込む為の物
     
 	for(int i=0;i<data_3d.size();i+=3){//inputファイルの行数回数繰り返す
 		data_3d[i]=data_3d[i+1]=data_3d[i+2]=nil;//全点にnil
@@ -1152,7 +1146,7 @@ void ReFileInput(char* Input_data){//その場でアウトプットしたファ�
 }
 
 
-void read_Point(char* Input_data) {
+void read_Point(const char *Input_data) {
 	int rP_count=0;
   std::cerr << "Start reading pointcloud." << std::endl;
 	FILE *fp = fopen(Input_data, "r");
