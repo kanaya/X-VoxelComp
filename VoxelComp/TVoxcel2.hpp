@@ -16,19 +16,20 @@
 /*----------------------------------------------------------------------------
 	ボクセル構造体
 ----------------------------------------------------------------------------*/
-struct TVoxcel{
-public:
-	int id;						//識別子
-	TVoxcel *parent;			//親ノード（これがNullのとき、このノードは根）
-	TVoxcel **child;			//子ノード（これがNullのとき、このノードは葉）
-	int child_size;				//子ノードの数:8分木なら基本8
-	int level;					//階層レベル（これが０のとき、このノードは根）
-	double min_x,min_y,min_z;	//この領域の最小の点
-	double max_x,max_y,max_z;	//この領域の最大の点
-	int point_number;			//内包する点群の個数
-	double value;				//このボクセルが持つ値(=階層数)
-	double state;				//このボクセルの状態(-1:存在しない,0:処理中,1:存在,2:固定、など)
+struct TVoxcel {
+  public:
+    int id;						//識別子
+    TVoxcel *parent;			//親ノード（これがNullのとき、このノードは根）
+    TVoxcel **child;			//子ノード（これがNullのとき、このノードは葉）
+    int child_size;				//子ノードの数:8分木なら基本8
+    int level;					//階層レベル（これが０のとき、このノードは根）
+    double min_x, min_y, min_z;	//この領域の最小の点
+    double max_x, max_y, max_z;	//この領域の最大の点
+    int point_number;			//内包する点群の個数
+    double value;				//このボクセルが持つ値(=階層数)
+    double state;				//このボクセルの状態(-1:存在しない,0:処理中,1:存在,2:固定、など)
 };
+
 TVoxcel *root;						//八分木作成用ルートボクセル
 
 //プロトタイプ宣言
@@ -46,28 +47,30 @@ void Rec_deleteTVoxcel(TVoxcel *voxcel);
 //parent: 親ボクセル
 //child_num: parentに対するvoxcelの番号(何番目の子か)
 //state: ボクセルの状態
-void initTVoxcel(TVoxcel *voxcel, TVoxcel *parent=NULL, int child_num=0, double state=-1){
-	if(parent!=NULL){
-		voxcel->level = parent->level+1;
-		voxcel->child_size = parent->child_size;//親と同じ分木が入る：基本は８
-		voxcel->id    = (int)(parent->id+pow(1.0*voxcel->child_size,1.0*voxcel->level)*(child_num + 1));//疑似8進法:000000000
+void initTVoxcel(TVoxcel *voxcel, TVoxcel *parent = 0, int child_num = 0, double state = -1) {
+	if (parent != 0) {
+		voxcel->level = parent->level + 1;
+		voxcel->child_size = parent->child_size;  //親と同じ分木が入る：基本は８
+		voxcel->id = static_cast<int>((parent->id + pow(1.0 * voxcel->child_size, 1.0 * voxcel->level) * (child_num + 1)));  //疑似8進法:000000000
 		voxcel->parent= parent;
 		voxcel->child =NULL;
-		if(voxcel->child_size==8){//8分木時：条件演算子→代入される物　＝　条件式　？　真：偽
-			voxcel->min_x = (child_num%2==0)   ? parent->min_x : (parent->min_x+parent->max_x)/2;
-			voxcel->min_y = (child_num/2%2==0) ? parent->min_y : (parent->min_y+parent->max_y)/2;
-			voxcel->min_z = (child_num/4==0)   ? parent->min_z : (parent->min_z+parent->max_z)/2;
-			voxcel->max_x = (child_num%2==0)   ? (parent->min_x+parent->max_x)/2 : parent->max_x;
-			voxcel->max_y = (child_num/2%2==0) ? (parent->min_y+parent->max_y)/2 : parent->max_y;
-			voxcel->max_z = (child_num/4==0)   ? (parent->min_z+parent->max_z)/2 : parent->max_z;
-		}else{//八分木ではない時
+		if (voxcel->child_size == 8) {  //8分木時：条件演算子→代入される物　＝　条件式　？　真：偽
+			voxcel->min_x = (child_num % 2 == 0)     ? parent->min_x : (parent->min_x + parent->max_x) / 2;
+			voxcel->min_y = (child_num / 2 % 2 == 0) ? parent->min_y : (parent->min_y + parent->max_y) / 2;
+			voxcel->min_z = (child_num / 4 == 0)     ? parent->min_z : (parent->min_z + parent->max_z) / 2;
+			voxcel->max_x = (child_num % 2 == 0)     ? (parent->min_x + parent->max_x) / 2 : parent->max_x;
+			voxcel->max_y = (child_num / 2 % 2 == 0) ? (parent->min_y + parent->max_y) / 2 : parent->max_y;
+			voxcel->max_z = (child_num / 4 == 0)     ? (parent->min_z + parent->max_z) / 2 : parent->max_z;
+		}
+    else{  //八分木ではない時
 			voxcel->min_x = 0, voxcel->min_y = 0, voxcel->min_z = 0;
 			voxcel->max_x = 1, voxcel->max_y = 1, voxcel->max_z = 1;
 		}
 		voxcel->point_number=0;
 		voxcel->value = 0;
 		voxcel->state = state;
-	}else{//ルートボクセル用
+  }
+  else {  //ルートボクセル用
 		voxcel->level = 0;
 		voxcel->id    = 0;
 		voxcel->parent= NULL;
@@ -79,7 +82,7 @@ void initTVoxcel(TVoxcel *voxcel, TVoxcel *parent=NULL, int child_num=0, double 
 		voxcel->max_x = 1;
 		voxcel->max_y = 1;
 		voxcel->max_z = 1;
-		voxcel->point_number=0;
+		voxcel->point_number = 0;
 		voxcel->value = 0;
 		voxcel->state = state;
 	}
@@ -92,10 +95,12 @@ void initTVoxcel(TVoxcel *voxcel, TVoxcel *parent=NULL, int child_num=0, double 
 ----------------------------------------------------------------------------*/
 //voxcel: 分割するボクセル
 //return: 分割処理を行ったか？(voxcelが既に分割されている場合はfalseを返す)
-bool devideTVoxcel(TVoxcel *voxcel){
-	if(voxcel->child!=NULL) return false;
-	voxcel->child = new TVoxcel*[voxcel->child_size];//まだ枝があるということで、8個作っておく。
-	for(int i=0;i<voxcel->child_size;i++){//１〜８(8分木なら8、4分木なら4が入る)
+bool devideTVoxcel(TVoxcel *voxcel) {
+	if (voxcel->child != 0) {
+    return false;
+  }
+	voxcel->child = new TVoxcel * [voxcel->child_size];  //まだ枝があるということで、8個作っておく。
+	for (int i = 0; i < voxcel->child_size; i++){  //１〜８(8分木なら8、4分木なら4が入る)
 		voxcel->child[i] = new TVoxcel();
 		initTVoxcel(voxcel->child[i], voxcel, i);
 	}
@@ -108,10 +113,10 @@ bool devideTVoxcel(TVoxcel *voxcel){
 	ボクセルを親から削除し、自分の子要素もすべて消す
 ----------------------------------------------------------------------------*/
 //voxcel: 削除するボクセル
-void deleteTVoxcel(TVoxcel *voxcel){
-	if(voxcel->child != NULL){
-		fprintf(stderr, "ボクセル削除[deleteTVoxcel]");//確認用
-        Rec_deleteTVoxcel(voxcel);
+void deleteTVoxcel(TVoxcel *voxcel) {
+	if(voxcel->child != 0) {
+		fprintf(stderr, "ボクセル削除[deleteTVoxcel]");  //確認用
+    Rec_deleteTVoxcel(voxcel);
 	}
 }
 
@@ -124,13 +129,19 @@ void deleteTVoxcel(TVoxcel *voxcel){
 //voxcel: ボクセル
 //x,y,z:  3次元座標値
 //return: 含むならtrue
-bool includePointInTVoxcel(TVoxcel *voxcel, double x, double y, double z){
-	if( voxcel->min_x<=x&&voxcel->max_x>=x &&
-		voxcel->min_y<=y&&voxcel->max_y>=y &&
-		voxcel->min_z<=z&&voxcel->max_z>=z ){
-			voxcel->point_number++;
-			return true;
-	}else{return false;}
+bool includePointInTVoxcel(TVoxcel *voxcel, double x, double y, double z) {
+	if (voxcel->min_x <= x
+      && voxcel->max_x >= x
+      && voxcel->min_y <= y
+      && voxcel->max_y >= y
+      && voxcel->min_z <= z
+      && voxcel->max_z >= z) {
+    voxcel->point_number++;
+    return true;
+	}
+  else {
+    return false;
+  }
 }
 
 /*----------------------------------------------------------------------------
@@ -143,21 +154,30 @@ bool includePointInTVoxcel(TVoxcel *voxcel, double x, double y, double z){
 //voxcel: ボクセル
 //x,y,z:  3次元座標値
 //return: 含むならtrue
-TVoxcel *getTVoxcel(TVoxcel *voxcel, double x, double y, double z, int level=-1){
-	TVoxcel *tmp_vox=voxcel;	//現在返す候補のボクセル
-	while( tmp_vox->child!=NULL && tmp_vox->level!=level ){
-		for(int i=0;i<tmp_vox->child_size;i++){
-			if( tmp_vox->child[i]->min_x<=x&&tmp_vox->child[i]->max_x>=x &&
-				tmp_vox->child[i]->min_y<=y&&tmp_vox->child[i]->max_y>=y &&
-				tmp_vox->child[i]->min_z<=z&&tmp_vox->child[i]->max_z>=z ){
-					tmp_vox = tmp_vox->child[i];
-					break;
+TVoxcel *getTVoxcel(TVoxcel *voxcel, double x, double y, double z, int level = -1) {
+	TVoxcel *tmp_vox = voxcel;	// 現在返す候補のボクセル
+	while (tmp_vox->child != 0 && tmp_vox->level != level) {
+		for (int i = 0; i < tmp_vox->child_size; i++) {
+			if (tmp_vox->child[i]->min_x <= x
+          && tmp_vox->child[i]->max_x >= x
+          && tmp_vox->child[i]->min_y <= y
+          && tmp_vox->child[i]->max_y >= y
+          && tmp_vox->child[i]->min_z <= z
+          && tmp_vox->child[i]->max_z >= z) {
+        tmp_vox = tmp_vox->child[i];
+				break;
 			}
-			if(i==tmp_vox->child_size-1)return NULL;
+			if (i == tmp_vox->child_size - 1) {
+        return 0;
+      }
 		}
 	}
-	if(tmp_vox->level==level || level<0){return tmp_vox;}
-	else{return NULL;}
+	if (tmp_vox->level == level || level < 0) {
+    return tmp_vox;
+  }
+	else {
+    return 0;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -174,14 +194,20 @@ TVoxcel *getTVoxcel(TVoxcel *voxcel, double x, double y, double z, int level=-1)
 //x,y,z:  3次元座標値
 //level:  指定階層
 //state:  分割してできたボクセルの状態(前回の状態より大きな状態であれば値は更新される)
-void devideTVoxcelByPoint(TVoxcel *voxcel, double x, double y, double z, int level, double state=1.0){
-	if(includePointInTVoxcel(voxcel, x,y,z)){
-		if(level>voxcel->level){
-			if(voxcel->child==NULL)	devideTVoxcel(voxcel);
-			for(int i=0;i<voxcel->child_size;i++) devideTVoxcelByPoint(voxcel->child[i], x,y,z, level,state);
+void devideTVoxcelByPoint(TVoxcel *voxcel, double x, double y, double z, int level, double state = 1.0) {
+	if (includePointInTVoxcel(voxcel, x,y,z)) {
+		if (level>voxcel->level) {
+			if (voxcel->child == 0) {
+        devideTVoxcel(voxcel);
+      }
+			for (int i = 0; i < voxcel->child_size; i++) {
+        devideTVoxcelByPoint(voxcel->child[i], x, y, z, level, state);
+      }
 		}
 		voxcel->value = voxcel->level;
-		if(state>voxcel->state) voxcel->state = state;
+		if (state > voxcel->state) {
+      voxcel->state = state;
+    }
 	}
 }
 
